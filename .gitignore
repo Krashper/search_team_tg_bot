@@ -1,0 +1,4 @@
+.vscode
+venv
+__paycache__.py
+*.pyc
