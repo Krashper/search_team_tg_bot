@@ -1,4 +1,6 @@
 .vscode
+.env
+env.py
 venv
 __paycache__.py
 *.pyc
