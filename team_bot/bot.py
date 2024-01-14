@@ -10,7 +10,7 @@ from aiogram_dialog import setup_dialogs
 
 
 async def main(TOKEN):
-    bot = Bot(token=TOKEN)
+    bot = Bot(token=TOKEN, parse_mode='HTML')
     storage = MemoryStorage()
     dp = Dispatcher(storage=storage, fsm_strategy=FSMStrategy.USER_IN_CHAT)
     
