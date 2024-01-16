@@ -1,9 +1,7 @@
 import asyncio
 import logging
 
-from team_bot.bot import main
 
-from env import TOKEN
 
 
 # Start the bot
