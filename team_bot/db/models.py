@@ -3,10 +3,11 @@ from sqlalchemy import(
     String, ForeignKey
 )
 
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import DeclarativeBase, relationship
 
 
-Base = declarative_base()
+class Base(DeclarativeBase):
+    pass
 
 
 class Users(Base):
