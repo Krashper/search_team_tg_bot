@@ -24,12 +24,39 @@ class Config(BaseSettings):
     REDIS_PASSWORD: Optional[str] = None
     REDIS_URL: Optional[RedisDsn] = None
     
+    @field_validator('REDIS_URL')
+    def redis_url(cls, v: Optional[str], values: Dict[str, Any]):
+        if isinstance(v, str):
+            return v
+        return RedisDsn.build(
+            scheme='redis',
+            password=values.data.get('REDIS_PASSWORD'),
+            host=values.data.get('REDIS_SERVER'), 
+            port=int(values.data.get('REDIS_PORT')),
+            path=values.data.get('REDIS_DB'), 
+        )
+    
     # PostgreSQL
-    POSTGRES_SERVER: str
+    POSTGRES_DRV: str
     POSTGRES_USER: str
     POSTGRES_PASSWORD:str
+    POSTGRES_SERVER: str
+    POSTGRES_PORT: str
     POSTGRES_DB: str
     SQLALCHEMY_DB_URL: Optional[PostgresDsn] = None
+    
+    @field_validator('SQLALCHEMY_DB_URL')
+    def alchemy_url(cls, v: Optional[str], values: Dict[str, Any]):
+        if isinstance(v, str):
+            return v
+        return PostgresDsn.build(
+            scheme=values.data.get('POSTGRES_DRV'),
+            username=values.data.get('POSTGRES_USER'),
+            password=values.data.get('POSTGRES_PASSWORD'),
+            host=values.data.get('POSTGRES_SERVER'),
+            port=int(values.data.get('POSTGRES_PORT'),),
+            path=f"{values.data.get('POSTGRES_DB')}"
+        )
     
 config = Config()
     
