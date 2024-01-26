@@ -61,7 +61,7 @@ class Config(BaseSettings):
     SQLALCHEMY_DB_URL_FOR_MIGRATIONS: Optional[PostgresDsn] = None
     
     @field_validator('SQLALCHEMY_DB_URL_FOR_MIGRATIONS')
-    def alchemy_url(cls, v: Optional[str], values: Dict[str, Any]):
+    def alchemy_url_for_migrations(cls, v: Optional[str], values: Dict[str, Any]):
         if isinstance(v, str):
             return v
         return PostgresDsn.build(
