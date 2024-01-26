@@ -1,4 +1,5 @@
 import os
+from pydantic_settings import BaseSettings
 from typing import Any, Dict, List, Optional
 from pydantic.functional_validators import field_validator
 from pydantic import RedisDsn, PostgresDsn
@@ -12,7 +13,7 @@ else:
     print("No .env file found. Using system environment variables.")
 
 
-class Settings:
+class Config(BaseSettings):
     
     TOKEN: str
 
@@ -30,6 +31,7 @@ class Settings:
     POSTGRES_DB: str
     SQLALCHEMY_DB_URL: Optional[PostgresDsn] = None
     
+config = Config()
     
     
     

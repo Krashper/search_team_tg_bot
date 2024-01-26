@@ -10,7 +10,7 @@ from team_bot.handlers import messages
 
 
 async def main():
-    bot = Bot(token=TOKEN)
+    bot = Bot(token=config.TOKEN)
     storage = MemoryStorage()
     dp = Dispatcher(storage=storage, fsm_strategy=FSMStrategy.USER_IN_CHAT)
     
