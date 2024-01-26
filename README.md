@@ -2,7 +2,7 @@
 
 ## Файл .env
 
-    TOKEN=6708800662:AAH-IAq0TjTboRpTzt7zA06GE5GYdqHOA9Y
+    TOKEN=
 
     # Redis variables
     REDIS_SERVER=
