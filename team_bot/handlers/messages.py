@@ -7,6 +7,14 @@ from aiogram.fsm.context import FSMContext
 from team_bot.database.db import check_register, is_unique_name, create_new_user
 from team_bot.keyboards.register_kb import create_lang_kb, create_get_username_kb
 
+# import db models classes
+from team_bot.db.models import Users
+
+from team_bot.db.repository import UserRepository
+
+user_data = Users()
+user_repo = UserRepository()
+
 languages = ['Русский', 'English']
 
 class Register(StatesGroup):
@@ -21,7 +29,7 @@ router = Router(name='messages')
 @router.message(CommandStart(), StateFilter(default_state))
 async def cmd_start(message: Message, state: FSMContext):
     user_id = message.from_user.id
-    if check_register(user_id):
+    if await user_repo.check_user(user_id=user_id):
         await message.answer(text=LEXICON['/start'])
     else:
         await message.answer(
@@ -29,6 +37,7 @@ async def cmd_start(message: Message, state: FSMContext):
             reply_markup=create_lang_kb(languages)
         )
         await state.set_state(Register.fill_language)
+
 
 @router.callback_query(F.data.in_(languages), StateFilter(Register.fill_language))
 async def language_register(callback: CallbackQuery, state: FSMContext):
@@ -80,7 +89,13 @@ async def age_register(message: Message, state: FSMContext):
         text=LEXICON['finish_register']
     )
     data = await state.get_data()
-    create_new_user(message.from_user, data['lang'], data['name'], data['username'], data['age'])
+    user_data.id = -1
+    user_data.telegram_id = message.from_user.id
+    user_data.lang = data['lang']
+    user_data.name = data['name']
+    user_data.nickname = data['username'],
+    user_data.age = data['age']       
+    await user_repo.add_user(user_data=user_data)    
     await state.clear()
 
 @router.message(StateFilter(Register.fill_age))

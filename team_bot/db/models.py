@@ -15,21 +15,25 @@ class Users(Base):
     
     id = Column(BigInteger, primary_key=True, unique=True, autoincrement=True)
     telegram_id = Column(Integer, unique=True,)
-    nickname = Column(String(32), unique=True)
-    lang = Column(String(6), nullable=False)
+    lang = Column(String(16), nullable=True, default='Русский')
+    name = Column(String(32), unique=False)
+    nickname = Column(String(32), unique=False)
+    age = Column(Integer, unique=False, nullable=True, default=18)
     
-    projects = relationship('Projects', back_populates='owner_id', lazy='selectin')
+    
+    
+    #projects = relationship('Projects', back_populates='owner_id', lazy='selectin')
     
     
 class Projects(Base):
     __tablename__ = 'projects'
     
     id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
-    owner_id = Column(BigInteger, ForeignKey('users.telegram_id'))
+    #owner_id = Column(BigInteger, ForeignKey('users.telegram_id'))
     name = Column(String(16), nullable=False)
     description = Column(String(50), nullable=False, default='None')
     
-    owner = relationship('Users', back_populates='projects', foreign_keys=[owner_id], lazy='selectin')
+    #owner = relationship('Users', back_populates='projects', foreign_keys=[owner_id], lazy='selectin')
     
     
 

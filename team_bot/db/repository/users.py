@@ -40,10 +40,11 @@ class UserRepository(UserRepositoryInterface):
             return True
         else:
             async with async_session() as session:
-                user_data = session.execute(
+                user_data = await session.execute(
                     select(Users).where(Users.telegram_id == user_id)
                 )
-                if user_data:
+                resul = user_data.first()
+                if resul:
                     return True
                 else:
                     return False
